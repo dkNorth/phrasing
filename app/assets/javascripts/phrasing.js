@@ -54,7 +54,7 @@ var phrasing_setup = function(){
 
   Phrasing.Bus.on('phrasing:edit-mode:on', function(){
     $('.phrasable').addClass("phrasable-on").attr("contenteditable", 'true');
-    if ($('.phrasable').innerHTML("")){
+    if ($('.phrasable').html("")){
       $(this).html("&nbsp;")
     }
     localStorage.setItem(Phrasing.EDIT_MODE_KEY, 'true');
@@ -113,7 +113,7 @@ var phrasing_setup = function(){
 
     var url = $(record).data("url");
 
-    var content = record.innerHTML;
+    var content = record.html();
 
     if(content.length === 0){
       content = " ";
