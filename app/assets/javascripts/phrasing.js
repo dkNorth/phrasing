@@ -113,7 +113,7 @@ var phrasing_setup = function(){
 
     var url = $(record).data("url");
 
-    var content = record.text();
+    var content = $(record).text();
 
     if(content.length === 0){
       content = " ";
