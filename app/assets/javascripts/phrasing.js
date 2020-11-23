@@ -113,7 +113,7 @@ var phrasing_setup = function(){
     var content = record.innerHTML;
 
     if(content.length === 0){
-      content = " ";
+      content = "&nbsp;";
     }
 
     $.ajax({
