@@ -1,64 +1,64 @@
 //= require editor
 
 var Phrasing = {
-  Bus : $({}),
-  EDIT_MODE_KEY : 'editing-mode'
+  Bus: $({}),
+  EDIT_MODE_KEY: 'editing-mode'
 };
 
-Phrasing.isEditModeEnabled = function(){
+Phrasing.isEditModeEnabled = function () {
   return localStorage.getItem(this.EDIT_MODE_KEY) === "true";
 };
 
-function StatusBubbleWidget(options){
-  this.$statusText       = options.$statusText;
-  this.$statusIndicator  = options.$statusIndicator;
+function StatusBubbleWidget(options) {
+  this.$statusText = options.$statusText;
+  this.$statusIndicator = options.$statusIndicator;
   this.$editModeChechbox = options.$editModeChechbox;
   this._init();
 }
 
 StatusBubbleWidget.prototype = {
-  _init : function(){
-    this.$editModeChechbox.on('change', function(){
-      if(this.checked){
+  _init: function () {
+    this.$editModeChechbox.on('change', function () {
+      if (this.checked) {
         Phrasing.Bus.trigger('phrasing:edit-mode:on');
-      }else{
+      } else {
         Phrasing.Bus.trigger('phrasing:edit-mode:off');
       }
     });
   },
 
-  _alterStatus : function(text, color){
+  _alterStatus: function (text, color) {
     this.$statusText.text(text);
     this.$statusIndicator.css('background-color', color);
   },
 
-  saving : function(){
+  saving: function () {
     this._alterStatus('Saving', 'orange');
   },
 
-  saved : function(){
+  saved: function () {
     this._alterStatus('Saved', '#56AE45');
   },
 
-  error : function(){
+  error: function () {
     this._alterStatus('Error', 'red');
   }
 };
 
-var phrasing_setup = function(){
+var phrasing_setup = function () {
   var statusBubbleWidget = new StatusBubbleWidget({
-    $statusText       : $('#phrasing-edit-mode-bubble #phrasing-saved-status-headline p'),
-    $statusIndicator  : $('#phrasing-saved-status-indicator-circle'),
-    $editModeChechbox : $('#edit-mode-onoffswitch')
+    $statusText: $('#phrasing-edit-mode-bubble #phrasing-saved-status-headline p'),
+    $statusIndicator: $('#phrasing-saved-status-indicator-circle'),
+    $editModeChechbox: $('#edit-mode-onoffswitch')
   });
 
-  Phrasing.Bus.on('phrasing:edit-mode:on', function(){
+  Phrasing.Bus.on('phrasing:edit-mode:on', function () {
     $('.phrasable').addClass("phrasable-on").attr("contenteditable", 'true');
     localStorage.setItem(Phrasing.EDIT_MODE_KEY, 'true');
     disable_links();
   });
 
-  Phrasing.Bus.on('phrasing:edit-mode:off', function(){
+  Phrasing.Bus.on('phrasing:edit-mode:off', function () {
     $('.phrasable').removeClass("phrasable-on").attr("contenteditable", "false");
     localStorage.setItem(Phrasing.EDIT_MODE_KEY, "false");
     enable_links();
@@ -68,15 +68,18 @@ var phrasing_setup = function(){
   editor.init();
 
   // Making sure to send csrf token from layout file.
-  $(document).ajaxSend(function(e, xhr, options) {
+  $(document).ajaxSend(function (e, xhr, options) {
     var token = $("meta[name='csrf-token']").attr("content");
     xhr.setRequestHeader("X-CSRF-Token", token);
   });
 
   // Hash size function
-  Object.size = function(obj){
-    var size = 0, key;
-    for (key in obj) { if (obj.hasOwnProperty(key)) size++; }
+  Object.size = function (obj) {
+    var size = 0,
+      key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
     return size;
   };
 
@@ -85,8 +88,8 @@ var phrasing_setup = function(){
   var timer = {};
   var timer_status = {};
 
-  $('.phrasable').on('DOMNodeInserted DOMNodeRemoved DOMCharacterDataModified', function(e){
-    if (userTriggeredPhrasingDOMChange === false){
+  $('.phrasable').on('DOMNodeInserted DOMNodeRemoved DOMCharacterDataModified', function (e) {
+    if (userTriggeredPhrasingDOMChange === false) {
       return;
     }
 
@@ -97,63 +100,66 @@ var phrasing_setup = function(){
     clearTimeout(timer[$(record).data("url")]);
     timer_status[$(record).data("url")] = 0;
 
-    timer[$(record).data("url")] = setTimeout(function(){
+    timer[$(record).data("url")] = setTimeout(function () {
       savePhraseViaAjax(record);
       delete timer_status[$(record).data("url")];
-    },2500);
+    }, 2500);
 
     timer_status[$(record).data("url")] = 1;
   });
 
   // AJAX Request
-  function savePhraseViaAjax(record){
+  function savePhraseViaAjax(record) {
 
     var url = $(record).data("url");
 
     var content = record.innerHTML;
 
-    if(content.length === 0){
+    if (content.length === 0) {
       content = "Empty";
     }
 
     $.ajax({
       type: "PUT",
       url: url,
-      data: { new_value: content, edit_mode_enabled: Phrasing.isEditModeEnabled() },
-      success: function(e){
+      data: {
+        new_value: content,
+        edit_mode_enabled: Phrasing.isEditModeEnabled()
+      },
+      success: function (e) {
         userTriggeredPhrasingDOMChange = false;
-        if(content === "Empty"){
-          $('span.phrasable[data-url="'+ url +'"]').html(content);
-        }else{
+        if (content === "Empty") {
+          $('span.phrasable[data-url="' + url + '"]').html(content);
+        } else {
           // Not to lose the cursor on the current contenteditable element
-          $('span.phrasable[data-url="'+ url +'"]').not(record).html(content);
+          $('span.phrasable[data-url="' + url + '"]').not(record).html(content);
         }
         userTriggeredPhrasingDOMChange = true;
 
-        if (Object.size(timer_status) === 0){
+        if (Object.size(timer_status) === 0) {
           statusBubbleWidget.saved();
         }
       },
-      error: function(e){
+      error: function (e) {
         console.log("Phrasing:", e.responseText);
         statusBubbleWidget.error();
       }
     });
   }
 
-  if(localStorage.getItem(Phrasing.EDIT_MODE_KEY) === undefined){
+  if (localStorage.getItem(Phrasing.EDIT_MODE_KEY) === undefined) {
     localStorage.setItem(Phrasing.EDIT_MODE_KEY, 'true');
   }
 
-  if(localStorage.getItem(Phrasing.EDIT_MODE_KEY) == 'true'){
+  if (localStorage.getItem(Phrasing.EDIT_MODE_KEY) == 'true') {
     $('#edit-mode-onoffswitch').prop('checked', true).change();
-  }else{
+  } else {
     $('#edit-mode-onoffswitch').prop('checked', false).change();
   }
 
   function disable_links() {
-    $('a').on("click.phrasing", function(e){
-      if($(this).find('span').hasClass('phrasable')) {
+    $('a').on("click.phrasing", function (e) {
+      if ($(this).find('span').hasClass('phrasable')) {
         e.preventDefault();
       }
     });
@@ -164,19 +170,20 @@ var phrasing_setup = function(){
   }
 };
 
-if(typeof Turbolinks == "object") {
+if (typeof Turbolinks == "object") {
   $(document).on('turbolinks:load', phrasing_setup);
 } else {
   $(document).ready(phrasing_setup);
 }
 
-$(document).on('page:before-change', function() {
+$(document).on('page:before-change', function () {
   Phrasing.Bus.off();
 });
 
-
-$('.noeditphrase').each(function(){
-      if ($(this).text() == 'Empty' || $(this).text() == '' || $(this).text() == ' '){
-          $(this).hide()
-      }
+$(document).ready(function () {
+  $('.noeditphrase').each(function () {
+    if ($(this).text() == 'Empty' || $(this).text() == '' || $(this).text() == ' ') {
+      $(this).hide()
+    }
+  })
 })
