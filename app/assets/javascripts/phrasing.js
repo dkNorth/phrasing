@@ -54,9 +54,6 @@ var phrasing_setup = function(){
 
   Phrasing.Bus.on('phrasing:edit-mode:on', function(){
     $('.phrasable').addClass("phrasable-on").attr("contenteditable", 'true');
-    if ($('.phrasable').text() == ""){
-      $(this).html("&nbsp;")
-    }
     localStorage.setItem(Phrasing.EDIT_MODE_KEY, 'true');
     disable_links();
   });
@@ -113,10 +110,10 @@ var phrasing_setup = function(){
 
     var url = $(record).data("url");
 
-    var content = $(record).text();
+    var content = record.innerHTML;
 
     if(content.length === 0){
-      content = " ";
+      content = "Empty";
     }
 
     $.ajax({
@@ -125,11 +122,11 @@ var phrasing_setup = function(){
       data: { new_value: content, edit_mode_enabled: Phrasing.isEditModeEnabled() },
       success: function(e){
         userTriggeredPhrasingDOMChange = false;
-        if(content === " "){
-          $('span.phrasable[data-url="'+ url +'"]').html("&nbsp;");
+        if(content === "Empty"){
+          $('span.phrasable[data-url="'+ url +'"]').html(content);
         }else{
           // Not to lose the cursor on the current contenteditable element
-          $('span.phrasable[data-url="'+ url +'"]').not(record).html("&nbsp;");
+          $('span.phrasable[data-url="'+ url +'"]').not(record).html(content);
         }
         userTriggeredPhrasingDOMChange = true;
 
@@ -176,3 +173,10 @@ if(typeof Turbolinks == "object") {
 $(document).on('page:before-change', function() {
   Phrasing.Bus.off();
 });
+
+
+$('.phrasable').each(function(){
+      if ($(this).text() == 'Empty' || $(this).text() == '' || $(this).text() == ' '){
+          $(this).hide()
+      }
+})

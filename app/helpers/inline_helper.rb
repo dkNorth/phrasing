@@ -36,7 +36,9 @@ module InlineHelper
   end
 
   def uneditable_phrase(record, attribute)
-    record.public_send(attribute).to_s.html_safe
+    content_tag(:div, class: 'noeditphrase') do
+      record.public_send(attribute).to_s.html_safe
+    end
   end
 
   def phrasing_polymorphic_url(record, attribute)
