@@ -54,7 +54,7 @@ var phrasing_setup = function(){
 
   Phrasing.Bus.on('phrasing:edit-mode:on', function(){
     $('.phrasable').addClass("phrasable-on").attr("contenteditable", 'true');
-    if ($('.phrasable').html("")){
+    if ($('.phrasable').text() == ""){
       $(this).html("&nbsp;")
     }
     localStorage.setItem(Phrasing.EDIT_MODE_KEY, 'true');
