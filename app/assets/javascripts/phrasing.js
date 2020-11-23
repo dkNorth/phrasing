@@ -113,7 +113,7 @@ var phrasing_setup = function(){
     var content = record.innerHTML;
 
     if(content.length === 0){
-      content = "&nbsp;";
+      content = " ";
     }
 
     $.ajax({
@@ -122,7 +122,7 @@ var phrasing_setup = function(){
       data: { new_value: content, edit_mode_enabled: Phrasing.isEditModeEnabled() },
       success: function(e){
         userTriggeredPhrasingDOMChange = false;
-        if(content === "Empty"){
+        if(content === " "){
           $('span.phrasable[data-url="'+ url +'"]').html(content);
         }else{
           // Not to lose the cursor on the current contenteditable element
