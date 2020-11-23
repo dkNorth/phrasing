@@ -113,7 +113,7 @@ var phrasing_setup = function(){
     var content = record.innerHTML;
 
     if(content.length === 0){
-      content = " ";
+      content = "Empty";
     }
 
     $.ajax({
@@ -122,11 +122,13 @@ var phrasing_setup = function(){
       data: { new_value: content, edit_mode_enabled: Phrasing.isEditModeEnabled() },
       success: function(e){
         userTriggeredPhrasingDOMChange = false;
-        if(content === " "){
+        if(content === "Empty"){
           $('span.phrasable[data-url="'+ url +'"]').html(content);
+          $('span.phrasable[data-url="'+ url +'"]').addClass('emptyButEditable');
         }else{
           // Not to lose the cursor on the current contenteditable element
           $('span.phrasable[data-url="'+ url +'"]').not(record).html(content);
+          $('span.phrasable[data-url="'+ url +'"]').removeClass('emptyButEditable');
         }
         userTriggeredPhrasingDOMChange = true;
 
