@@ -175,7 +175,7 @@ $(document).on('page:before-change', function() {
 });
 
 
-$('.phrasable').each(function(){
+$('.noeditphrase').each(function(){
       if ($(this).text() == 'Empty' || $(this).text() == '' || $(this).text() == ' '){
           $(this).hide()
       }
