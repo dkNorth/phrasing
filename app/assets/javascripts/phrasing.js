@@ -88,7 +88,7 @@ var phrasing_setup = function () {
   var timer = {};
   var timer_status = {};
 
-  $('.phrasable').on('DOMNodeInserted DOMNodeRemoved DOMCharacterDataModified', function (e) {
+  $('.phrasable').on('input', function (e) {
     if (userTriggeredPhrasingDOMChange === false) {
       return;
     }
