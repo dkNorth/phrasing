@@ -26,7 +26,7 @@ module InlineHelper
     url = phrasing_polymorphic_url(record, attribute)
 
     content_tag(:span, class: klass, spellcheck: false, 'data-url' => url) do
-      (record.send(attribute) || raw(record.try(:key).to_s + raw('<a href="/phrasing/"' + record + '/edit'))
+      (record.send(attribute) || record.try(:key)).to_s + '<a href="/phrasing/"' + record + '/edit'.html_safe 
     end
   end
 
