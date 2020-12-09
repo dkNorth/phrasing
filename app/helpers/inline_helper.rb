@@ -35,7 +35,7 @@ module InlineHelper
 
   def atag(record)
     content_tag(:a, href: '<a href="/phrasing/' + record.id.to_s + '/edit">Bearbeiten</a>') do
-      Bearbeiten
+      'Bearbeiten'
     end
   end
 
