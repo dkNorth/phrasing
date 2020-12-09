@@ -1,0 +1,29 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+  <title>Phrasing</title>
+  <%= stylesheet_link_tag "phrasing_engine", media: "all" %>
+  <%= javascript_include_tag "phrasing_engine" %>
+  <%= csrf_meta_tag %>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+</head>
+
+<body>
+  <div id="page">
+    <%= render 'phrasing/production_warning' if Rails.env.production? %>
+    <%= render 'phrasing/menu' %>
+    <%= render 'phrasing/messages' %>
+    <%= yield %>
+  </div>
+  <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+  <script>
+    $(document).ready(function () {
+      CKEDITOR.replaceClass = 'editor';
+    });
+    CKEDITOR.replace('editor');
+  </script>
+</body>
+
+</html>

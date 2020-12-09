@@ -2,7 +2,7 @@
   %h2= @phrasing_phrase.key
   = link_to "Delete Phrase", phrasing_phrase_path(@phrasing_phrase), class: "btn btn-danger delete-phrase", method: :delete, data: { confirm: 'Are you sure?' }
   = form_for @phrasing_phrase, url: { action: "update" } do |f|
-    = f.text_area :value, rows: 12
+    = f.text_area :value, rows: 12, class: 'editor'
     = f.submit "Update", class: "btn btn-success submit-edit-phrase"
   %br
   - unless @phrasing_phrase.versions.empty?
