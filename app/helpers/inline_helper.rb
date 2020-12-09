@@ -27,10 +27,13 @@ module InlineHelper
 
     content_tag(:span, class: klass, spellcheck: false, 'data-url' => url) do
       (record.send(attribute) || record.try(:key)).to_s
+
+      content_tag(:a, href: '/phrasing/' + record.id.to_s + '/edit') do
+        'Bearbeiten'
+      end
     end
-    content_tag(:a) do
-      '<a href="/phrasing/' + record.id.to_s + '/edit">Edit</a>'.html_safe 
-    end
+
+ 
   end
 
   def phrasing_extract_record(key, options = {})
