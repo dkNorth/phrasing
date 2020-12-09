@@ -7,7 +7,7 @@ module InlineHelper
   def phrase(*args)
     if args[0].class.in? [String, Symbol]
       key, options = args[0].to_s, (args[1] || {})
-      inline(phrasing_extract_record(key, options), :value, options) + '<a href="/phrasing/' + key.id + '/edit">Bearbeiten</a>'
+      inline(phrasing_extract_record(key, options), :value, options) + '<a href="/phrasing/' + phrasing_extract_record(key, options).id + '/edit">Bearbeiten</a>'
     else
       record, attribute, options = args[0], args[1], args[2]
       inline(record, attribute, options || {})
