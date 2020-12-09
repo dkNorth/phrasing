@@ -5,7 +5,7 @@
   <%= link_to "Delete Phrase", phrasing_phrase_path(@phrasing_phrase), class: "btn btn-danger delete-phrase", method: :delete, data: { confirm: 'Are you sure?' } %>
   <%= form_for @phrasing_phrase, url: { action: "update" } do |f| %>
   <div>
-    <%= f.text_area :value, rows: 12, class: 'editor',rows:"10", cols:"80" %>
+    <%= f.text_area :value, rows: 12, class: 'editor',rows:"10", cols:"80",style:"display:block !important;" %>
   </div>
     <%= f.submit "Update", class: "btn btn-success submit-edit-phrase" %>
   <% end %>
