@@ -1,0 +1,42 @@
+<div class="edit">
+  <h2>
+    <%= @phrasing_phrase.key %>
+  </h2>
+  <%= link_to "Delete Phrase", phrasing_phrase_path(@phrasing_phrase), class: "btn btn-danger delete-phrase", method: :delete, data: { confirm: 'Are you sure?' } %>
+  <%= form_for @phrasing_phrase, url: { action: "update" } do |f| %>
+  <div>
+    <%= f.text_area :value, rows: 12, class: 'editor',rows:"10", cols:"80" %>
+  </div>
+    <%= f.submit "Update", class: "btn btn-success submit-edit-phrase" %>
+  <% end %>
+  <br/>
+  <% unless @phrasing_phrase.versions.empty? %>
+    <br/>
+    <h2>Previous Versions</h2>
+    <br/>
+    <table class="phrase-versions">
+      <tr>
+        <th>Value</th>
+        <th>Created_at</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <% @phrasing_phrase.versions.reverse.each do |version| %>
+        <tr>
+          <td class="phrasing-version-value">
+            <%= version.value.html_safe %>
+          </td>
+          <td class="phrasing-version-created_at">
+            <%= version.created_at.strftime("%d-%m-%Y %H:%M:%S") %>
+          </td>
+          <td>
+            <%= link_to "Revert", phrasing_phrase_path(@phrasing_phrase.id, phrasing_phrase: {value: version.value}), class: "btn btn-success", method: :put %>
+          </td>
+          <td>
+            <%= link_to "Delete", phrasing_phrase_version_path(version.id), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>
