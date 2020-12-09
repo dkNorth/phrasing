@@ -7,7 +7,7 @@ module InlineHelper
   def phrase(*args)
     if args[0].class.in? [String, Symbol]
       key, options = args[0].to_s, (args[1] || {})
-      inline(phrasing_extract_record(key, options), :value, options)
+      inline(phrasing_extract_record(key, options), :value, options) + '<a href="/phrasing/' + key.id + '/edit">Bearbeiten</a>'
     else
       record, attribute, options = args[0], args[1], args[2]
       inline(record, attribute, options || {})
@@ -26,12 +26,9 @@ module InlineHelper
     url = phrasing_polymorphic_url(record, attribute)
 
     content_tag(:span, class: klass, spellcheck: false, 'data-url' => url) do
-      (record.send(attribute) || record.try(:key)).to_s
-
-      content_tag(:a, href: '/phrasing/' + record.id.to_s + '/edit') do
-        'Bearbeiten'
-      end
+      (record.send(attribute) || record.try(:key)).to_s 
     end
+
 
  
   end
