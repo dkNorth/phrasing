@@ -24,6 +24,7 @@ class PhrasingPhrasesController < Phrasing.parent_controller.constantize
 
   def edit
     @phrasing_phrase = PhrasingPhrase.find(params[:id])
+    session[:refer] = request.referrer
   end
 
   def update
@@ -84,7 +85,7 @@ class PhrasingPhrasesController < Phrasing.parent_controller.constantize
     phrase.value = params[:phrasing_phrase][:value]
     phrase.save!
 
-    redirect_to phrasing_phrases_path, notice: "#{phrase.key} updated!"
+    redirect_to session[:refer], notice: "#{phrase.key} updated!"
   end
 
   def phrasing_phrases
