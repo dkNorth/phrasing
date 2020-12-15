@@ -35,7 +35,7 @@ module InlineHelper
 
   def atag(record)
     if can_edit_phrases?
-      content_tag(:a, href: '/phrasing/' + record.id.to_s + '/edit') do
+      content_tag(:a, href: '/phrasing/' + record.id.to_s + '/edit',style: 'font-size:10px !important; font-weight:300 !important;') do
         'Bearbeiten'
       end
     end

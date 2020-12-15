@@ -22,10 +22,7 @@
     $(document).ready(function () {
     CKEDITOR.replace('editor',{
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript',
-      toolbar: [{
-          name: 'clipboard',
-          items: ['PasteFromWord', '-', 'Undo', 'Redo']
-        },
+      toolbar: [
         {
           name: 'basicstyles',
           items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
@@ -36,11 +33,11 @@
         },
         {
           name: 'paragraph',
-          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent']
         },
         {
           name: 'insert',
-          items: ['Image', 'Table']
+          items: ['Table']
         },
         {
           name: 'editing',
@@ -60,10 +57,6 @@
           name: 'align',
           items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
         },
-        {
-          name: 'document',
-          items: ['Print', 'Source']
-        }
       ],
     });
     });
