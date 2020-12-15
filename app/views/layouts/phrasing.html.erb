@@ -20,10 +20,10 @@
   <script src="https://cdn.ckeditor.com/4.13.0/full/ckeditor.js"></script>
   <script>
     $(document).ready(function () {
-      CKEDITOR.replaceClass = 'editor';
-      CKEDITOR.editorConfig.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
+    CKEDITOR.replace('editor',{
+      removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
     });
-    CKEDITOR.replace('editor');
+        });
   </script>
 </body>
 
