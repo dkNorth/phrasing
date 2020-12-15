@@ -21,6 +21,7 @@
   <script>
     $(document).ready(function () {
       CKEDITOR.replaceClass = 'editor';
+      CKEDITOR.editorConfig.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
     });
     CKEDITOR.replace('editor');
   </script>
